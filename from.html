@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='ko'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>프로미스나인 별명 추천</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff5fa;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.card{width:100%;max-width:520px;background:#fff;border-radius:22px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+h1{text-align:center;color:#ff4f93}input{width:100%;padding:14px;border:2px solid #ffd1e5;border-radius:12px;font-size:16px}
+button{width:100%;padding:14px;margin-top:12px;border:none;border-radius:12px;background:#ff4f93;color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
+#error{display:none;color:#d93025;text-align:center;margin-top:16px;font-weight:bold}
+#result{display:none;margin-top:20px;text-align:center}.nickname{font-size:32px;font-weight:800;color:#222}
+</style></head><body>
+<div class='card'><h1>프로미스나인 별명 추천</h1><p>정확한 멤버명만 입력 가능합니다.</p>
+<input id='nameInput' placeholder='예: 이나경'><button onclick='recommend()'>별명 추천받기</button>
+<div id='error'>정확한 멤버명이 아닙니다. 다시 입력해주세요.</div>
+<div id='result'><div id='memberName'></div><div id='nickname' class='nickname'></div></div></div>
+<script>
+const nicknames = {"송하영": ["하냥", "하빵", "전사광기", "낭만대장", "바보대대장", "바보장군", "바보원수", "대학원생", "송복숭", "전자광딸", "열정너구리", "매력적인 모찌", "소하영", "송하지", "수플렉스 장인", "맏내", "언더제로", "미하영", "파일드라이버 장인", "백드롭 장인", "깻잎 빨리먹기 장인", "송딸깍", "생존왕", "명예 빵빵즈", "빵빵즈 리더", "송매미", "꼰대가르송", "송하브레드", "송호동", "골든햄찌", "보거스"], "장규리": ["귤", "개죽이", "영덕대개", "귤죽이", "코죽이", "개죽크박스", "규리 공주님", "귤공", "규디", "규리 선배", "귤아빠", "줄리", "청개규리", "귤리", "새우깡", "음색깡패", "섹시 계란말이", "장굳이", "짱뀰"], "박지원": ["져니", "메건", "안정적", "G1", "여친여치니", "부요해머", "허스키 파워 보컬", "강아지원", "행복지원", "부산에서 온 꼬메이", "꼬메이건", "157", "용각산레전드", "메찔이", "메딱지", "메간둥이", "박밥솥", "박빈수레", "박꽉찬수레", "백지원", "욕쟁이", "메견", "건이", "개똥이", "메쪽이", "한지민", "박가스", "쥐꼬리", "도지원", "꼬마 자동차", "1메건미터", "요라나다 그란데", "젼스민", "토끼반 선생님", "아기 블루베리"], "이새롬": ["롬쌔", "강력수비", "새로미", "크롬쌔", "여르미", "때롬", "촘새", "뉴롬", "가로새롬", "꽁주", "핑꽁", "프롬", "새콤달콤", "신세경", "롬캡틴", "따도녀", "롬황상제", "돼롬이", "행복전도사", "느맹이", "곰쌔", "3자씨", "빵승이", "오일롬"], "이채영": ["챙", "꽹", "포대자루", "챙람쥐", "엘리자베스", "챙리자베스", "이과장", "빅스쿼럴", "챙아지", "엘모", "물만두", "이챙영", "메건 억제기", "프나 전투력 1위", "휴지 엄마", "채우스", "라이코스"], "이나경": ["나꼬", "바보대장", "동그래미꼬", "팔당대교", "가짜 막내", "나깅이", "경나경나", "뿅아리", "삐약이", "이나견", "한조장인", "죠스바", "총리돌", "짬짜면", "아수라 백작", "자몽요정", "마리", "나꼬르륵", "나꼰대", "캠틴", "선미진", "나꼬부기", "퀸나경", "여왕 나경"], "노지선": ["지센", "지쎈", "노장금", "노래자랑", "럭키걸", "구구지선", "욱지선", "상모지선", "선견지선", "포뇨", "소중한 요정", "노양심 씨", "밥캡틴", "노멀씨", "지순", "찰떡이"], "이서연": ["더여니", "더연", "션", "셔니", "로라", "양털이불", "판다", "양평 스웨거", "유령신부", "곰젤리", "인어공주", "사기캐", "쓰나", "갱얼쥐", "용각산", "가오리", "빵승이", "더라니", "션생님"], "백지헌": ["헌이", "꿀깅이", "순얼해자", "파괴왕", "허니", "꿀", "우리꿀", "하이라이트 장인", "삐끼삐끼 장인", "미소천사", "눈웃음 천사", "빽", "빽지", "꿀언니", "막딩이", "막깅이", "막내온탑", "백바둑", "백치명", "헌", "흑지헌", "토코몬", "로꾸꺼핑", "엄친딸", "주당", "입덕요정", "최약체", "빅베이비"]};
+function recommend(){
+ const name=document.getElementById('nameInput').value.trim();
+ if(!nicknames[name]){document.getElementById('error').style.display='block';document.getElementById('result').style.display='none';return;}
+ document.getElementById('error').style.display='none';
+ document.getElementById('result').style.display='block';
+ document.getElementById('memberName').textContent=name;
+ const list=nicknames[name];
+ document.getElementById('nickname').textContent=list[Math.floor(Math.random()*list.length)];
+}
+document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')recommend();});
+</script></body></html>
